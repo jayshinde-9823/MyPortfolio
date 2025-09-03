@@ -8,6 +8,13 @@
     "framer-motion": "^10.16.4",
     "lucide-react": "^0.272.0"
   },
+  "dependencies": {
+  "react": "^18.0.0",
+  "react-dom": "^18.0.0",
+  "react-scripts": "^5.0.1",
+  "framer-motion": "^10.16.4",
+  "lucide-react": "^0.272.0"
+},
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -15,3 +22,4 @@
     "eject": "react-scripts eject"
   }
 }
+
