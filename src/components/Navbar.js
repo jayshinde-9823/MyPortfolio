@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-scroll";
-import { FaSun, FaMoon, FaBars, FaTimes } from "react-icons/fa";
+import { Menu, X, Sun, Moon, Download } from "lucide-react";
 
-const links = [
+const NAV = [
   { id: "home", label: "Home" },
   { id: "about", label: "About" },
   { id: "skills", label: "Skills" },
@@ -10,61 +9,78 @@ const links = [
   { id: "contact", label: "Contact" },
 ];
 
-export default function Navbar({ darkMode, setDarkMode }) {
+export default function Navbar({ theme, toggleTheme }) {
   const [open, setOpen] = useState(false);
+
+  const scrollToSection = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    setOpen(false);
+  };
+
   return (
-    <header className="fixed w-full z-30 bg-white/70 dark:bg-slate-900/70 backdrop-blur border-b border-slate-200 dark:border-slate-800">
-      <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-        <div className="text-lg font-bold text-indigo-600 dark:text-indigo-400">Jay J. Shinde</div>
+    <header className="sticky top-0 z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur border-b border-gray-200 dark:border-slate-800">
+      <div className="max-w-6xl mx-auto flex justify-between items-center px-4 py-3">
+        <h1
+          onClick={() => scrollToSection("home")}
+          className="text-xl font-bold cursor-pointer"
+        >
+          Jay <span className="text-indigo-500">Shinde</span>
+        </h1>
 
+        {/* Desktop Nav */}
         <nav className="hidden md:flex gap-6 items-center">
-          {links.map((l) => (
-            <Link
-              key={l.id}
-              to={l.id}
-              spy
-              smooth
-              offset={-80}
-              duration={500}
-              className="cursor-pointer text-slate-700 dark:text-slate-200 hover:text-indigo-500 dark:hover:text-indigo-300"
+          {NAV.map((n) => (
+            <button
+              key={n.id}
+              onClick={() => scrollToSection(n.id)}
+              className="hover:text-indigo-500 transition"
             >
-              {l.label}
-            </Link>
+              {n.label}
+            </button>
           ))}
-
-          <button
-            onClick={() => setDarkMode(!darkMode)}
-            aria-label="Toggle theme"
-            className="p-2 rounded-md bg-slate-100 dark:bg-slate-800"
+          <a
+            href="/DOC-20240720-WA0002.pdf"
+            download
+            className="flex items-center gap-2 px-3 py-1 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500"
           >
-            {darkMode ? <FaSun className="text-yellow-400" /> : <FaMoon className="text-slate-700" />}
-          </button>
-          <a href="/DOC-20240720-WA0002.pdf" target="_blank" rel="noreferrer" className="px-3 py-1 rounded-md bg-indigo-600 text-white">
-            Download CV
+            <Download size={16} /> CV
           </a>
+          <button onClick={toggleTheme} className="p-2 rounded-lg">
+            {theme === "dark" ? <Sun /> : <Moon />}
+          </button>
         </nav>
 
-        {/* mobile */}
-        <div className="md:hidden flex items-center gap-3">
-          <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-md bg-slate-100 dark:bg-slate-800">
-            {darkMode ? <FaSun className="text-yellow-400" /> : <FaMoon className="text-slate-700" />}
-          </button>
-          <button onClick={() => setOpen((s) => !s)} className="p-2 rounded-md bg-slate-100 dark:bg-slate-800">
-            {open ? <FaTimes /> : <FaBars />}
-          </button>
-        </div>
+        {/* Mobile */}
+        <button onClick={() => setOpen(!open)} className="md:hidden">
+          {open ? <X /> : <Menu />}
+        </button>
       </div>
 
       {open && (
-        <div className="md:hidden bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
-          <div className="flex flex-col px-4 py-4 gap-3">
-            {links.map((l) => (
-              <Link key={l.id} to={l.id} spy smooth offset={-70} duration={500} onClick={() => setOpen(false)} className="cursor-pointer">
-                <div className="py-2 text-slate-700 dark:text-slate-200">{l.label}</div>
-              </Link>
-            ))}
-            <a href="/DOC-20240720-WA0002.pdf" target="_blank" rel="noreferrer" className="py-2 bg-indigo-600 text-white rounded-md text-center">Download CV</a>
-          </div>
+        <div className="md:hidden px-4 pb-3 space-y-2 border-t border-slate-800">
+          {NAV.map((n) => (
+            <button
+              key={n.id}
+              onClick={() => scrollToSection(n.id)}
+              className="block w-full text-left py-2 hover:text-indigo-500"
+            >
+              {n.label}
+            </button>
+          ))}
+          <a
+            href="/DOC-20240720-WA0002.pdf"
+            download
+            className="block py-2 text-indigo-500"
+          >
+            Download CV
+          </a>
+          <button
+            onClick={toggleTheme}
+            className="flex items-center gap-2 py-2"
+          >
+            {theme === "dark" ? <Sun /> : <Moon />}
+            {theme === "dark" ? "Light Mode" : "Dark Mode"}
+          </button>
         </div>
       )}
     </header>
