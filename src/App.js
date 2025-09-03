@@ -8,23 +8,29 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 
 export default function App() {
-  const [darkMode, setDarkMode] = useState(true);
+  const [theme, setTheme] = useState("dark");
 
   useEffect(() => {
-    if (darkMode) document.documentElement.classList.add("dark");
-    else document.documentElement.classList.remove("dark");
-  }, [darkMode]);
+    const savedTheme = localStorage.getItem("theme") || "dark";
+    setTheme(savedTheme);
+    document.documentElement.classList.toggle("dark", savedTheme === "dark");
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === "dark" ? "light" : "dark";
+    setTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+    document.documentElement.classList.toggle("dark", newTheme === "dark");
+  };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950 transition-colors">
-      <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
-      <main className="pt-20">
-        <Hero />
-        <About />
-        <Skills />
-        <Projects />
-        <Contact />
-      </main>
+    <div className="font-sans bg-white dark:bg-slate-950 text-gray-900 dark:text-slate-100">
+      <Navbar theme={theme} toggleTheme={toggleTheme} />
+      <Hero />
+      <About />
+      <Skills />
+      <Projects />
+      <Contact />
       <Footer />
     </div>
   );
