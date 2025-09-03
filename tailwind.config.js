@@ -1,15 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",   // scans all React files
+    "./src/**/*.{js,jsx,ts,tsx}",
+    "./public/index.html",
   ],
   theme: {
-    extend: {
-      fontFamily: {
-        sans: ["Inter", "sans-serif"], // optional custom font
-      },
-    },
+    extend: {},
   },
   plugins: [],
-};
+}
