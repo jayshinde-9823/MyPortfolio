@@ -2,12 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-gray-900 text-white;
-  font-family: 'Inter', sans-serif;
-}
+/* smooth anchor scrolling */
 html {
   scroll-behavior: smooth;
 }
 
-
+/* optional small utility */
+:root {
+  --accent: #6366f1; /* indigo-500 */
+}
