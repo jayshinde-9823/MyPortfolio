@@ -3,35 +3,35 @@ import { sendForm } from "@emailjs/browser";
 
 export default function Contact() {
   const formRef = useRef(null);
-  const [sent, setSent] = useState(false);
-  const [error, setError] = useState("");
+  const [status, setStatus] = useState({ ok: false, msg: "" });
 
   const onSubmit = (e) => {
     e.preventDefault();
-    // Replace serviceId, templateId, publicKey with your EmailJS credentials
-    const serviceId = "YOUR_EMAILJS_SERVICE_ID";
-    const templateId = "YOUR_EMAILJS_TEMPLATE_ID";
-    const publicKey = "YOUR_EMAILJS_PUBLIC_KEY";
 
-    if (!serviceId || !templateId || !publicKey) {
-      // fallback: open mail client
-      const form = new FormData(formRef.current);
-      const subject = form.get("subject") || "Contact from portfolio";
-      const body = `Name: ${form.get("name")}\nEmail: ${form.get("email")}\n\n${form.get("message")}`;
+    // Put your EmailJS values here if you want real sending:
+    const SERVICE_ID = process.env.REACT_APP_EMAILJS_SERVICE_ID || "";
+    const TEMPLATE_ID = process.env.REACT_APP_EMAILJS_TEMPLATE_ID || "";
+    const PUBLIC_KEY = process.env.REACT_APP_EMAILJS_PUBLIC_KEY || "";
+
+    if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
+      // fallback to mailto if not configured
+      const fd = new FormData(formRef.current);
+      const subject = fd.get("subject") || "Message from portfolio";
+      const body = `Name: ${fd.get("name")}\nEmail: ${fd.get("email")}\n\n${fd.get("message")}`;
       window.location.href = `mailto:jayshinde9823@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       return;
     }
 
-    sendForm(serviceId, templateId, formRef.current, publicKey)
+    sendForm(SERVICE_ID, TEMPLATE_ID, formRef.current, PUBLIC_KEY)
       .then(() => {
-        setSent(true);
+        setStatus({ ok: true, msg: "Message sent — thank you!" });
         formRef.current.reset();
-        setTimeout(() => setSent(false), 5000);
+        setTimeout(() => setStatus({ ok: false, msg: "" }), 5000);
       })
       .catch((err) => {
         console.error(err);
-        setError("Failed to send. You can email me directly.");
-        setTimeout(() => setError(""), 5000);
+        setStatus({ ok: false, msg: "Failed to send. Please email directly." });
+        setTimeout(() => setStatus({ ok: false, msg: "" }), 5000);
       });
   };
 
@@ -39,12 +39,13 @@ export default function Contact() {
     <section id="contact" className="py-16 border-t border-slate-800">
       <div className="max-w-6xl mx-auto px-4">
         <h2 className="text-2xl font-bold text-indigo-400">Contact</h2>
+
         <div className="mt-6 grid md:grid-cols-3 gap-8">
           <div className="space-y-3 text-sm">
             <p><strong>Email:</strong> jayshinde9823@gmail.com</p>
             <p><strong>Phone:</strong> +91 8180019745</p>
             <p><strong>Location:</strong> Shindewadi Ravalgaon, Chiplun, Ratnagiri, India</p>
-            <a href="/DOC-20240720-WA0002.pdf" target="_blank" rel="noreferrer" className="inline-block mt-3 bg-indigo-600 px-4 py-2 rounded text-white">Download CV</a>
+            <a href="/DOC-20240720-WA0002.pdf" download className="inline-block mt-3 bg-indigo-600 px-4 py-2 rounded text-white">Download CV</a>
           </div>
 
           <form ref={formRef} onSubmit={onSubmit} className="md:col-span-2 space-y-4 bg-slate-900/60 p-6 rounded-xl border border-slate-800">
@@ -54,8 +55,7 @@ export default function Contact() {
             <textarea name="message" rows="5" placeholder="Message" className="w-full px-4 py-3 rounded bg-slate-800 border border-slate-700" required />
             <div className="flex items-center gap-3">
               <button type="submit" className="px-4 py-2 bg-indigo-600 rounded text-white">Send Message</button>
-              {sent && <div className="text-green-400 text-sm">Message sent — thank you!</div>}
-              {error && <div className="text-red-400 text-sm">{error}</div>}
+              {status.msg && <div className={`${status.ok ? "text-green-400" : "text-amber-400"} text-sm`}>{status.msg}</div>}
             </div>
           </form>
         </div>
