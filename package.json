@@ -2,24 +2,26 @@
   "name": "myportfolio",
   "version": "1.0.0",
   "private": true,
+  "homepage": "https://jayshinde-9823.github.io/myportfolio",
   "dependencies": {
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "react-scripts": "5.0.1",
     "framer-motion": "^10.16.4",
-    "lucide-react": "^0.272.0"
+    "lucide-react": "^0.424.0"
   },
-  "dependencies": {
-  "react": "^18.0.0",
-  "react-dom": "^18.0.0",
-  "react-scripts": "^5.0.1",
-  "framer-motion": "^10.16.4",
-  "lucide-react": "^0.272.0"
-},
+  "devDependencies": {
+    "tailwindcss": "^3.4.7",
+    "postcss": "^8.4.39",
+    "autoprefixer": "^10.4.19",
+    "gh-pages": "^6.0.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   }
 }
-
