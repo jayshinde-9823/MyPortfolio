@@ -2,7 +2,6 @@
   "name": "myportfolio",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://jayshinde-9823.github.io/myportfolio",
   "dependencies": {
     "emailjs-com": "^3.2.0",
     "react": "^18.0.0",
@@ -26,4 +25,5 @@
     "deploy": "gh-pages -d build"
   }
 }
+
 
